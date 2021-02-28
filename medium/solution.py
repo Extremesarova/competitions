@@ -14,7 +14,7 @@ import lightgbm as lgb
 from html.parser import HTMLParser
 from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
 
-PATH_TO_DATA = '/Users/Extremesarova/PycharmProjects/MachineLearning/MLcourse.ai/Assignment 2/Medium/data'
+PATH_TO_DATA = 'data'
 AUTHOR = 'Artem_Ryblov'  # change here to <name>_<surname>
 # it's a nice practice to define most of hyperparams here
 SEED = 17
