@@ -1,20 +1,21 @@
-import os
 import json
-from tqdm import tqdm_notebook
+import os
+import pickle
+from html.parser import HTMLParser
+
+import lightgbm as lgb
 import numpy as np
 import pandas as pd
-import pickle
-from sklearn.feature_extraction.text import TfidfVectorizer
+import tqdm
 from scipy.sparse import csr_matrix, hstack
-from bs4 import BeautifulSoup
-from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.linear_model import Ridge
-import lightgbm as lgb
-from html.parser import HTMLParser
 from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import Ridge
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import StandardScaler
 
 PATH_TO_DATA = 'data'
+PATH_TO_ADDITIONAL_DATA = 'additional_data'
 AUTHOR = 'Artem_Ryblov'  # change here to <name>_<surname>
 # it's a nice practice to define most of hyperparams here
 SEED = 17
@@ -63,23 +64,21 @@ def read_json_line(line=None):
     return result
 
 
-def extract_features_and_write(path_to_data,
-                               inp_filename, is_train=True):
+def extract_features_and_write(path_to_data, path_to_save, inp_filename, is_train=True):
     titles = []
     contents = []
     dates = []
     authors = []
     features = ['content', 'published', 'title', 'author']
     prefix = 'train' if is_train else 'test'
-    feature_files = [open(os.path.join(path_to_data,
+    feature_files = [open(os.path.join(path_to_save,
                                        '{}_{}.txt'.format(prefix, feat)),
                           'w', encoding='utf-8')
                      for feat in features]
 
-    with open(os.path.join(path_to_data, inp_filename),
-              encoding='utf-8') as inp_json_file:
+    with open(os.path.join(path_to_data, inp_filename), encoding='utf-8') as inp_json_file:
 
-        for line in tqdm_notebook(inp_json_file):
+        for line in tqdm.tqdm(inp_json_file, desc=f"Reading {prefix} json files"):
             json_data = read_json_line(line)
 
             title = json_data['title'].replace('\n', ' ').replace('\t', ' ').replace('\r', ' ').replace('\xa0', ' ')
@@ -96,8 +95,8 @@ def extract_features_and_write(path_to_data,
 
     dic = {'content': contents, 'published': dates, 'title': titles, 'author': authors}
     for feature in features:
-        filename = PATH_TO_DATA + prefix + "_" + feature + ".txt"
-        with open(filename, 'wb') as fp:
+        filename = prefix + "_" + feature + ".txt"
+        with open(os.path.join(path_to_save, filename), 'wb') as fp:
             pickle.dump(dic[feature], fp)
 
     return titles, contents, dates, authors
@@ -126,7 +125,7 @@ def add_time_features(dates):
 
 
 def write_submission_file(prediction, filename,
-                          path_to_sample=os.path.join(PATH_TO_DATA,
+                          path_to_sample=os.path.join(PATH_TO_ADDITIONAL_DATA,
                                                       'sample_submission.csv')):
     submission = pd.read_csv(path_to_sample, index_col='id')
 
@@ -134,82 +133,94 @@ def write_submission_file(prediction, filename,
     submission.to_csv(filename)
 
 
-train_titles, train_contents, train_dates, train_authors = extract_features_and_write(PATH_TO_DATA, 'train.json',
-                                                                                      is_train=True)
-test_titles, test_contents, test_dates, test_authors = extract_features_and_write(PATH_TO_DATA, 'test.json',
-                                                                                  is_train=False)
+def main():
+    train_titles, train_contents, train_dates, train_authors = extract_features_and_write(PATH_TO_DATA,
+                                                                                          PATH_TO_ADDITIONAL_DATA,
+                                                                                          'train.json',
+                                                                                          is_train=True)
+    test_titles, test_contents, test_dates, test_authors = extract_features_and_write(PATH_TO_DATA,
+                                                                                      PATH_TO_ADDITIONAL_DATA,
+                                                                                      'test.json',
+                                                                                      is_train=False)
 
-# Tf-Idf for article
-vectorizer_params = {'ngram_range': CONTENT_NGRAMS,
-                     'max_features': MAX_FEATURES,
-                     'tokenizer': lambda s: s.split(),
-                     'stop_words': ENGLISH_STOP_WORDS,
-                     }
-vectorizer_article = TfidfVectorizer(**vectorizer_params)
-X_train_article = vectorizer_article.fit_transform(train_contents)
-X_test_article = vectorizer_article.transform(test_contents)
+    # Tf-Idf for article
+    vectorizer_params = {'ngram_range': CONTENT_NGRAMS,
+                         'max_features': MAX_FEATURES,
+                         'tokenizer': lambda s: s.split(),
+                         'stop_words': ENGLISH_STOP_WORDS,
+                         }
+    vectorizer_article = TfidfVectorizer(**vectorizer_params)
+    X_train_article = vectorizer_article.fit_transform(train_contents)
+    X_test_article = vectorizer_article.transform(test_contents)
 
-# Tf-Idf for titles
-vectorizer_params = {'ngram_range': TITLE_NGRAMS,
-                     'max_features': MAX_FEATURES,
-                     'tokenizer': lambda s: s.split(),
-                     'stop_words': ENGLISH_STOP_WORDS
-                     }
-vectorizer_title = TfidfVectorizer(**vectorizer_params)
-X_train_title = vectorizer_title.fit_transform(train_titles)
-X_test_title = vectorizer_title.transform(test_titles)
+    print("Doing TF-IDF")
+    # Tf-Idf for titles
+    vectorizer_params = {'ngram_range': TITLE_NGRAMS,
+                         'max_features': MAX_FEATURES,
+                         'tokenizer': lambda s: s.split(),
+                         'stop_words': ENGLISH_STOP_WORDS
+                         }
+    vectorizer_title = TfidfVectorizer(**vectorizer_params)
+    X_train_title = vectorizer_title.fit_transform(train_titles)
+    X_test_title = vectorizer_title.transform(test_titles)
 
-train_times = pd.to_datetime([date['$date'] for date in train_dates])
-test_times = pd.to_datetime([date['$date'] for date in test_dates])
+    train_times = pd.to_datetime([date['$date'] for date in train_dates])
+    test_times = pd.to_datetime([date['$date'] for date in test_dates])
 
-X_train_time_features_sparse, time_feature_names = add_time_features(train_times)
-X_test_time_features_sparse, _ = add_time_features(test_times)
+    X_train_time_features_sparse, time_feature_names = add_time_features(train_times)
+    X_test_time_features_sparse, _ = add_time_features(test_times)
 
-# Bag of authors
-authors = np.unique(train_authors + test_authors)
-enc = OneHotEncoder(handle_unknown='ignore')
-enc.fit(authors.reshape(-1, 1))
-enc.categories_
-X_train_author_sparse = enc.transform(np.array(train_authors).reshape(-1, 1)).toarray()
-X_test_author_sparse = enc.transform(np.array(test_authors).reshape(-1, 1)).toarray()
+    # Bag of authors
+    authors = np.unique(train_authors + test_authors)
+    enc = OneHotEncoder(handle_unknown='ignore')
+    enc.fit(authors.reshape(-1, 1))
+    enc.categories_
+    X_train_author_sparse = enc.transform(np.array(train_authors).reshape(-1, 1)).toarray()
+    X_test_author_sparse = enc.transform(np.array(test_authors).reshape(-1, 1)).toarray()
 
-# Additional features
-train_len = [len(article) for article in train_contents]
-test_len = [len(article) for article in test_contents]
-scaler = StandardScaler()
+    # Additional features
+    train_len = [len(article) for article in train_contents]
+    test_len = [len(article) for article in test_contents]
+    scaler = StandardScaler()
 
-X_train_len_sparse = scaler.fit_transform(np.array(train_len).reshape(-1, 1))
-X_test_len_sparse = scaler.fit_transform(np.array(test_len).reshape(-1, 1))
+    X_train_len_sparse = scaler.fit_transform(np.array(train_len).reshape(-1, 1))
+    X_test_len_sparse = scaler.fit_transform(np.array(test_len).reshape(-1, 1))
 
-X_train_sparse = hstack([X_train_article, X_train_title,
-                         X_train_author_sparse,
-                         X_train_time_features_sparse, X_train_len_sparse]).tocsr()
+    X_train_sparse = hstack([X_train_article, X_train_title,
+                             X_train_author_sparse,
+                             X_train_time_features_sparse, X_train_len_sparse]).tocsr()
 
-X_test_sparse = hstack([X_test_article, X_test_title,
-                        X_test_author_sparse,
-                        X_test_time_features_sparse, X_test_len_sparse]).tocsr()
+    X_test_sparse = hstack([X_test_article, X_test_title,
+                            X_test_author_sparse,
+                            X_test_time_features_sparse, X_test_len_sparse]).tocsr()
 
-train_target = pd.read_csv(os.path.join(PATH_TO_DATA, 'train_log1p_recommends.csv'),
-                           index_col='id')
-y_train = train_target['log_recommends'].values
+    train_target = pd.read_csv(os.path.join(PATH_TO_DATA, 'train_log1p_recommends.csv'),
+                               index_col='id')
+    y_train = train_target['log_recommends'].values
 
-# alpha_values = np.logspace(-2, 2, 20)
-ridge = Ridge(random_state=17, alpha=0.01)
-# logit_grid_searcher = GridSearchCV(estimator=ridge, param_grid={'alpha': alpha_values}, scoring='neg_mean_absolute_error', n_jobs=4, cv=3, verbose=1)
-ridge.fit(X_train_sparse, y_train);
-# final_model = logit_grid_searcher.best_estimator_
-ridge_test_pred = ridge.predict(X_test_sparse)
+    print("Doing Ridge")
+    # alpha_values = np.logspace(-2, 2, 20)
+    ridge = Ridge(random_state=42, alpha=0.01)
+    # logit_grid_searcher = GridSearchCV(estimator=ridge, param_grid={'alpha': alpha_values}, scoring='neg_mean_absolute_error', n_jobs=4, cv=3, verbose=1)
+    ridge.fit(X_train_sparse, y_train)
+    # final_model = logit_grid_searcher.best_estimator_
+    ridge_test_pred = ridge.predict(X_test_sparse)
 
-lgb_x_train = lgb.Dataset(X_train_sparse.astype(np.float32),
-                          label=np.log1p(y_train))
+    print("Doing Light GBM")
+    lgb_x_train = lgb.Dataset(X_train_sparse.astype(np.float32),
+                              label=np.log1p(y_train))
 
-param = {'num_leaves': LGB_NUM_LEAVES,
-         'objective': 'mean_absolute_error',
-         'metric': 'mae'}
-bst_lgb = lgb.train(param, lgb_x_train, LGB_TRAIN_ROUNDS)
-lgb_test_pred = np.expm1(bst_lgb.predict(X_test_sparse.astype(np.float32)))
+    param = {'num_leaves': LGB_NUM_LEAVES,
+             'objective': 'mean_absolute_error',
+             'metric': 'mae'}
+    bst_lgb = lgb.train(param, lgb_x_train, LGB_TRAIN_ROUNDS)
+    lgb_test_pred = np.expm1(bst_lgb.predict(X_test_sparse.astype(np.float32)))
 
-mix_pred = LGB_WEIGHT * lgb_test_pred + RIDGE_WEIGHT * ridge_test_pred
-mix_test_pred_modif = mix_pred + MEAN_TEST_TARGET - y_train.mean()
+    mix_pred = LGB_WEIGHT * lgb_test_pred + RIDGE_WEIGHT * ridge_test_pred
+    mix_test_pred_modif = mix_pred + MEAN_TEST_TARGET - y_train.mean()
 
-write_submission_file(mix_test_pred_modif, f'submission_alice_{AUTHOR}.csv')
+    write_submission_file(mix_test_pred_modif, f'submission_alice_{AUTHOR}.csv')
+
+
+if __name__ == "__main__":
+    main()
