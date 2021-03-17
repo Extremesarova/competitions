@@ -142,7 +142,7 @@ def main():
                                                                                       PATH_TO_ADDITIONAL_DATA,
                                                                                       'test.json',
                                                                                       is_train=False)
-
+    print("Doing TF-IDF vectorization for articles")
     # Tf-Idf for article
     vectorizer_params = {'ngram_range': CONTENT_NGRAMS,
                          'max_features': MAX_FEATURES,
@@ -153,7 +153,7 @@ def main():
     X_train_article = vectorizer_article.fit_transform(train_contents)
     X_test_article = vectorizer_article.transform(test_contents)
 
-    print("Doing TF-IDF")
+    print("Doing TF-IDF vectorization for titles")
     # Tf-Idf for titles
     vectorizer_params = {'ngram_range': TITLE_NGRAMS,
                          'max_features': MAX_FEATURES,
@@ -170,6 +170,7 @@ def main():
     X_train_time_features_sparse, time_feature_names = add_time_features(train_times)
     X_test_time_features_sparse, _ = add_time_features(test_times)
 
+    print("Doing bag of authors")
     # Bag of authors
     authors = np.unique(train_authors + test_authors)
     enc = OneHotEncoder(handle_unknown='ignore')
@@ -213,7 +214,7 @@ def main():
     param = {'num_leaves': LGB_NUM_LEAVES,
              'objective': 'mean_absolute_error',
              'metric': 'mae'}
-    bst_lgb = lgb.train(param, lgb_x_train, LGB_TRAIN_ROUNDS)
+    bst_lgb = lgb.train(param, lgb_x_train, LGB_TRAIN_ROUNDS, verbose_eval=5)
     lgb_test_pred = np.expm1(bst_lgb.predict(X_test_sparse.astype(np.float32)))
 
     mix_pred = LGB_WEIGHT * lgb_test_pred + RIDGE_WEIGHT * ridge_test_pred
