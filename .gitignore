@@ -1,0 +1,5 @@
+*.vec
+.ipynb_checkpoints
+*.bin
+*.gz
+venv/
