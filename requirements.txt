@@ -11,3 +11,12 @@ six==1.15.0
 soupsieve==2.2
 threadpoolctl==2.1.0
 tqdm==4.58.0
+ipykernel==6.6.0
+ipywidgets
+widgetsnbextension
+pandas-profiling
+jupyterlab
+jupyterlab_code_formatter
+black
+isort
+jupyterlab-spellchecker==0.7.2

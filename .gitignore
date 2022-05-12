@@ -3,3 +3,5 @@
 *.bin
 *.gz
 venv/
+data/
+*.pdf
