@@ -4,7 +4,7 @@
 
 * [Churn prediction](https://nbviewer.org/github/Extremesarova/mini_projects/blob/main/churn/churn_prediction_front.ipynb) `Binary Classification`  
 The task is to predict churn of telecom company customers.  
-Implementation includes:
+[Implementation](https://github.com/Extremesarova/mini_projects/tree/main/churn) includes:
   * Exploratory Data Analysis
     * Missing Values Imputation
     * Categorical Columns Encoding
@@ -13,7 +13,9 @@ Implementation includes:
     * Baseline: SimpleImputer + StandardScaler + OneHotEncoder + Logistic regression + GridSearchCV
     * Final: CatBoost + Hyperparameter Search (Optuna)
 
-# TO-DO
+TODO
+<details>
+  <summary>Click to expand!</summary>
 
 * word2vec
 * salary prediction
@@ -22,3 +24,5 @@ Implementation includes:
   * song prediction
   * alice
 * Классификация Симпсонов
+
+</details>
