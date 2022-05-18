@@ -1,5 +1,18 @@
 # Mini projects
 
+## List of projects
+
+* [Churn prediction](https://nbviewer.org/github/Extremesarova/mini_projects/blob/main/churn/churn_prediction_front.ipynb) `Binary Classification`  
+The task is to predict churn of telecom company customers.  
+Implementation includes:
+  * Exploratory Data Analysis
+    * Missing Values Imputation
+    * Categorical Columns Encoding
+    * Data Normalization
+  * Modeling:
+    * Baseline: SimpleImputer + StandardScaler + OneHotEncoder + Logistic regression + GridSearchCV
+    * Final: CatBoost + Hyperparameter Search (Optuna)
+
 # TO-DO
 
 * word2vec
@@ -8,6 +21,4 @@
   * medium
   * song prediction
   * alice
-* Churn prediction  
-есть идеи посмотреть на дубликаты в данных и на выбросы
 * Классификация Симпсонов

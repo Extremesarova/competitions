@@ -1,13 +1,49 @@
-# Mini projects
+# Churn prediction
+[Solution](https://nbviewer.org/github/Extremesarova/mini_projects/blob/main/churn/churn_prediction_front.ipynb)  
 
-# TO-DO
+`Binary Classification`  
+The task is to predict churn of telecom company customers.  
 
-* word2vec
-* salary prediction
-* Finish
-  * medium
-  * song prediction
-  * alice
-* Churn prediction  
-есть идеи посмотреть на дубликаты в данных и на выбросы
-* Классификация Симпсонов
+Kaggle competition: [Предсказание оттока пользователей](https://www.kaggle.com/competitions/advanced-dls-spring-2021/submissions)  
+
+Dataset:
+
+* Dimensions:
+  * Train: 5282 rows
+  * Test: 1761 rows
+* Features:
+  * Categorical columns:
+    * Sex
+    * IsSeniorCitizen
+    * HasPartner
+    * HasChild
+    * HasPhoneService
+    * HasMultiplePhoneNumbers
+    * HasInternetService
+    * HasOnlineSecurityService
+    * HasOnlineBackup
+    * HasDeviceProtection
+    * HasTechSupportAccess
+    * HasOnlineTV
+    * HasMovieSubscription
+    * HasContractPhone
+    * IsBillingPaperless
+    * PaymentMethod
+  * Numerical columns:
+    * ClientPeriod
+    * MonthlySpending
+    * TotalSpent
+
+Implementation includes:
+
+* **Exploratory Data Analysis**
+  * Missing Values Imputation
+  * Categorical Columns Encoding
+  * Data Normalization
+* **Modeling**:
+  * Baseline: SimpleImputer + StandardScaler + OneHotEncoder + **Logistic regression** + GridSearchCV
+  * Final: **CatBoost** + Hyperparameter Search (Optuna)
+
+## TODO
+
+* Outliers detection
