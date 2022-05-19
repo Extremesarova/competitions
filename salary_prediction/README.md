@@ -24,7 +24,6 @@ Dataset:
 Implementation includes:
 
 * **Exploratory Data Analysis**
-  * Missing Values Imputation
   * Categorical Columns Encoding
   * Target transformation
 * **Modeling**:
@@ -36,4 +35,5 @@ Implementation includes:
 
 ## TODO
 
-* Outliers detection
+* Improved model
+* Explaining model predictions

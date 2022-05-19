@@ -17,7 +17,6 @@ The task is to predict churn of telecom company customers.
 The task is to predict salary based on the different text and categorical features.  
 [Implementation](https://github.com/Extremesarova/mini_projects/tree/main/salary_prediction) includes:
   * **Exploratory Data Analysis**
-    * Missing Values Imputation
     * Categorical Columns Encoding
     * Target transformation
   * **Modeling**:
