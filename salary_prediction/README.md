@@ -1,6 +1,6 @@
 # Salary prediction
 
-[Solution](https://nbviewer.org/github/Extremesarova/mini_projects/blob/main/churn/churn_prediction_front.ipynb)  
+[Solution](https://nbviewer.org/github/Extremesarova/mini_projects/blob/main/salary_prediction/salary_prediction.ipynb)  
 
 `Regression` `DL` `NLP`  
 The task is to predict salary based on the different text and categorical features.
