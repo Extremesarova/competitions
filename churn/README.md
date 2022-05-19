@@ -44,6 +44,8 @@ Implementation includes:
   * Baseline: SimpleImputer + StandardScaler + OneHotEncoder + **Logistic regression** + GridSearchCV
   * Final: **CatBoost** + Hyperparameter Search (Optuna)
 
+[Original location](https://github.com/Extremesarova/deep_learning_school/tree/main/part_1/3_kaggle)
+
 ## TODO
 
 * Outliers detection

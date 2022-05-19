@@ -13,16 +13,4 @@ The task is to predict churn of telecom company customers.
     * Baseline: SimpleImputer + StandardScaler + OneHotEncoder + Logistic regression + GridSearchCV
     * Final: CatBoost + Hyperparameter Search (Optuna)
 
-TODO
-<details>
-  <summary>Click to expand!</summary>
-
-* word2vec
-* salary prediction
-* Finish
-  * medium
-  * song prediction
-  * alice
-* Классификация Симпсонов
-
-</details>
+P.S. More to come!
