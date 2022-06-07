@@ -1,4 +1,4 @@
-# Churn prediction
+# Simple classification
 
 [Solution](https://nbviewer.org/github/Extremesarova/mini_projects/blob/main/synthetic_classification/simple_classification/simple_classification.ipynb)  
 
