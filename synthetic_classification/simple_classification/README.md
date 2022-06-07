@@ -1,6 +1,6 @@
 # Churn prediction
 
-[Solution]()  
+[Solution](https://nbviewer.org/github/Extremesarova/mini_projects/blob/main/synthetic_classification/simple_classification/simple_classification.ipynb)  
 
 `Binary Classification`  
 The task is to predict binary target.  
