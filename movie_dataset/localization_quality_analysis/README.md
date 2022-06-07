@@ -1,6 +1,6 @@
 # Research on the quality of localization of movie titles
 
-[Notebook]()  
+[Notebook](https://nbviewer.org/github/Extremesarova/mini_projects/blob/main/movie_dataset/localization_quality_analysis/movie_title_translation.ipynb)  
 
 `Multilingual Sentence Embeddings` `Text Similarity`  
 The goal of this research is to find out:

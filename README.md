@@ -37,13 +37,13 @@ The task is to build classifier using Convnets to classify images from [Simpsons
 
 This is a pet-project for which I scraped information about top-1000 popular movies and top-1000 popular series.
 
-* [Research on the quality of localization of movie titles]() `Multilingual Sentence Embeddings` `Text Similarity`  
+* [Research on the quality of localization of movie titles](https://nbviewer.org/github/Extremesarova/mini_projects/blob/main/movie_dataset/localization_quality_analysis/movie_title_translation.ipynb) `Multilingual Sentence Embeddings` `Text Similarity`  
   The goal of this research is to find out:
 
   * How similar Russian titles and original titles are in general?
   * Can we split dissimilar pairs (`Russian title`::`original title`) into groups by root cause?
 
-  [Implementation]() includes:
+  [Implementation](https://github.com/Extremesarova/mini_projects/tree/main/movie_dataset/localization_quality_analysis) includes:
   * **Exploratory Data Analysis**
     * Exploring dataset
     * Cleaning dataset
