@@ -1,6 +1,6 @@
-# Simple classification
+# Complex classification
 
-[Solution](https://nbviewer.org/github/Extremesarova/mini_projects/blob/main/synthetic_classification/simple_classification/simple_classification.ipynb)  
+[Solution](https://nbviewer.org/github/Extremesarova/mini_projects/blob/main/synthetic_classification/complex_classification/complex_classification.ipynb)  
 
 `Binary Classification`  
 The task is to predict binary target.  
@@ -8,8 +8,8 @@ The task is to predict binary target.
 Dataset:
 
 * Dimensions:
-  * Train: 943 rows
-  * Test: 315 rows
+  * Train: 1887 rows
+  * Test: 629 rows
 * Features:
   * Numerical columns:
     * Feature 1
