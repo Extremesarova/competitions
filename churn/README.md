@@ -1,5 +1,5 @@
 # Churn prediction
-[Solution](https://nbviewer.org/github/Extremesarova/mini_projects/blob/main/churn/churn_prediction_front.ipynb)  
+[Solution](https://nbviewer.org/github/Extremesarova/mini_projects/blob/main/churn/churn_prediction.ipynb)  
 
 `Binary Classification`  
 The task is to predict churn of telecom company customers.  

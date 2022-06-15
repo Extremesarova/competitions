@@ -2,7 +2,7 @@
 
 ## List of projects
 
-* [Churn prediction](https://nbviewer.org/github/Extremesarova/mini_projects/blob/main/churn/churn_prediction_front.ipynb) `Binary Classification` `Classic ML` `Tabular`  
+* [Churn prediction](https://nbviewer.org/github/Extremesarova/mini_projects/blob/main/churn/churn_prediction.ipynb) `Binary Classification` `Classic ML` `Tabular`  
 The task is to predict churn of telecom company customers.  
 [Implementation](https://github.com/Extremesarova/mini_projects/tree/main/churn) includes:
   * **Exploratory Data Analysis**
