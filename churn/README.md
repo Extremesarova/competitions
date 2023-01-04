@@ -6,7 +6,7 @@ The task is to predict churn of telecom company customers.
 
 Kaggle competition: [Предсказание оттока пользователей](https://www.kaggle.com/competitions/advanced-dls-spring-2021/submissions)  
 
-Dataset:
+## Dataset
 
 * Dimensions:
   * Train: 5282 rows
@@ -34,7 +34,7 @@ Dataset:
     * MonthlySpending
     * TotalSpent
 
-Implementation includes:
+## Implementation
 
 * **Exploratory Data Analysis**
   * Missing Values Imputation

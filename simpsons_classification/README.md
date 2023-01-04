@@ -5,13 +5,13 @@
 `Multiclass classification` `DL` `CV` `Transfer Learning`  
 The task is to build classifier using Convnets to classify images from [Simpsons](https://www.kaggle.com/competitions/journey-springfield) series onto 42 classes.
 
-Dataset:
+## Dataset
 
 * Dimensions:
   * Train: 20933 images
   * Test: 991 images
 
-Implementation includes:
+## Implementation
 
 * **Data preparation**:
   * Label Encoding

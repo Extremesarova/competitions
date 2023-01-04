@@ -5,7 +5,7 @@
 `Regression` `DL` `NLP`  
 The task is to predict salary based on the different text and categorical features.
 
-Dataset:
+## Dataset
 
 * Dimensions:
   * Train: 195814 rows
@@ -21,7 +21,7 @@ Dataset:
     * Title
     * FullDescription
 
-Implementation includes:
+## Implementation
 
 * **Exploratory Data Analysis**
   * Categorical Columns Encoding
