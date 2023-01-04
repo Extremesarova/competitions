@@ -1,0 +1,11 @@
+ipywidgets
+widgetsnbextension
+pandas-profiling
+jupyterlab
+jupyterlab_code_formatter
+black
+isort
+jupyterlab-spellchecker
+pandas==1.5.2
+seaborn==0.12.2
+matplotlib==3.6.2
