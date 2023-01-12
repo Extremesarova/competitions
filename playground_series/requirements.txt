@@ -6,8 +6,9 @@ jupyterlab_code_formatter
 black
 isort
 jupyterlab-spellchecker
-pandas==1.5.2
+pandas==1.4.3
 seaborn==0.12.2
 matplotlib==3.6.2
 scikit_learn==1.2.0
 h2o==3.38.0.4
+lightautoml==0.3.7.3
